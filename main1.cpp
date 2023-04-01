@@ -17,7 +17,7 @@ SomeClass *getC() {
     return new SomeClass{2};
 }
 
-int main() {
+int main1() {
     #ifdef __linux__
     XInitThreads();
     #endif
