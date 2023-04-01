@@ -1,4 +1,4 @@
-#include <SFML/Audio.hpp>
+/*#include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <chrono>
@@ -59,3 +59,4 @@ int main1() {
 
     return 0;
 }
+*/
