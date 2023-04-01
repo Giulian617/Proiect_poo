@@ -74,7 +74,7 @@ private:
     int matrix[15][15]={};
     vector<Train>trains;
 public:
-    explicit Level() {};
+    Level() = default;
     friend istream& operator >>(istream&,Level&);
     friend ostream& operator <<(ostream&,const Level&);
 };
@@ -84,7 +84,28 @@ istream& operator >>(istream& in,Level& l)
     for(int i=0;i<=14;i++)
         for(int j=0;j<=14;j++)
             in>>l.matrix[i][j];
+    int n;
+    Train t;
+    in>>n;
+    for(int i=0; i<n; i++)
+    {
+        in>>t;
+        l.trains.push_back(t);
+    }
+    return in;
+}
 
+ostream& operator <<(ostream& out,const Level& l)
+{
+    for(int i=0;i<=14;i++)
+    {
+        for(int j=0;j<=14;j++)
+            out<<l.matrix[i][j]<<' ';
+        out<<'\n';
+    }
+    for(const Train& train : l.trains)
+        out<<train;
+    return out;
 }
 //class World
 //{
@@ -97,7 +118,7 @@ int main()
     Train t1(1,"green"), t2(2,"red"),t3(t2);
     t3=t1;
     cout<<t3;
-    Level l1(), l2();
+    Level l1{}, l2{};
 //    World w1();
     return 0;
 }
