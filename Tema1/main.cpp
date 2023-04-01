@@ -45,7 +45,7 @@ public:
         return *this;
     }
     friend istream& operator >>(istream&,Train&);
-    friend ostream& operator <<(ostream&,Train&);
+    friend ostream& operator <<(ostream&,const Train&);
     ~Train()
     {
         delete[] color; ///not necessary to check if it is a nullptr
@@ -63,7 +63,7 @@ istream& operator >>(istream& in,Train& t)
     return in;
 }
 
-ostream& operator <<(ostream& out,Train& t)
+ostream& operator <<(ostream& out,const Train& t)
 {
     return out<<t.number<<' '<<t.color<<'\n';
 }
@@ -76,7 +76,7 @@ private:
 public:
     explicit Level() {};
     friend istream& operator >>(istream&,Level&);
-    friend ostream& operator <<(ostream&,Level&);
+    friend ostream& operator <<(ostream&,const Level&);
 };
 
 istream& operator >>(istream& in,Level& l)
