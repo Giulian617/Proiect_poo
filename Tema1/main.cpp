@@ -79,13 +79,13 @@ class Level
 {
 private:
     bool rail_matrix[15][15]={},train_matrix[15][15]={};
-    [[maybe_unused]] int road_matrix[15][15]={},distance[15]={};
+    /// int road_matrix[15][15]={},distance[15]={};
     int n,available_rails,finish_row,finish_column;
     vector<Train>trains;
 public:
     explicit Level(int dim=0,int rails=0,int row=0,int column=0):n(dim),available_rails(rails),finish_row(row),finish_column(column){}
-    [[maybe_unused]] void set_rail_matrix(int,int,bool); ///going to use them in a future version
-    [[maybe_unused]] void set_train_matrix(int,int,bool); ///going to use them in a future version
+    /// void set_rail_matrix(int,int,bool); ///going to use them in a future version
+    /// void set_train_matrix(int,int,bool); ///going to use them in a future version
 /// bool path_to_finish(int,int);
 /// bool if_collision(); /// also creates road_matrix;
 /// void generate_distances()
@@ -94,15 +94,15 @@ public:
     friend ostream& operator <<(ostream&,const Level&);
 };
 
-[[maybe_unused]] void Level::set_rail_matrix(int row,int column,bool used)
-{
-    rail_matrix[row][column]=used;
-}
-
-[[maybe_unused]] void Level::set_train_matrix(int row,int column,bool used)
-{
-    train_matrix[row][column]=used;
-}
+// void Level::set_rail_matrix(int row,int column,bool used)
+//{
+//    rail_matrix[row][column]=used;
+//}
+//
+// void Level::set_train_matrix(int row,int column,bool used)
+//{
+//    train_matrix[row][column]=used;
+//}
 
 //bool Level::path_to_finish(int row, int column)
 //{
