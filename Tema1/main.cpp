@@ -79,7 +79,7 @@ class Level
 {
 private:
     bool rail_matrix[15][15]={},train_matrix[15][15]={};
-    int road_matrix[15][15]={},distance[15];
+    [[maybe_unused]] int road_matrix[15][15]={},distance[15]={};
     int n,available_rails,finish_row,finish_column;
     vector<Train>trains;
 public:
