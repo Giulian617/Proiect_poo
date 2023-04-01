@@ -8,7 +8,7 @@
 
 - [x] Scurtă descriere a temei alese, ce v-ați propus să implementați
 
-  A puzzle game with trains and rails, with a very small story and a few characters, based on the game Railbound which is available on Steam.
+  A puzzle game with trains and rails, with a very small story and a few characters, based on the game [Railbound](https://store.steampowered.com/app/1967510/Railbound/).
 
 ## Tema 1
 
