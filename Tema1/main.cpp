@@ -1,6 +1,8 @@
 #include <iostream>
 #include <cstring>
 #include <vector>
+#include <queue>
+
 using namespace std;
 
 class Train
@@ -45,7 +47,6 @@ public:
         }
         return *this;
     }
-    void increase_number();
     friend istream& operator >>(istream&,Train&);
     friend ostream& operator <<(ostream&,const Train&);
     ~Train()
@@ -54,14 +55,8 @@ public:
     }
 };
 
-void Train::increase_number()
-{
-    number++;
-}
-
 istream& operator >>(istream& in,Train& t)
 {
-    in>>t.number;
     char aux[256];
     in>>aux;
     delete[] t.color; ///not necessary to check if it is a nullptr
@@ -78,18 +73,19 @@ ostream& operator <<(ostream& out,const Train& t)
 class Level
 {
 private:
-    bool rail_matrix[15][15]={},train_matrix[15][15]={};
-    /// int road_matrix[15][15]={},distance[15]={};
-    int n,available_rails,finish_row,finish_column;
-    vector<Train>trains;
+    bool rail_matrix[15][15]={};
+    int n,m,available_rails,train_no,finish_row,finish_column,road_matrix[15][15]={};
+    vector<int>distances;
+    vector<pair<Train,pair<int,int>>>trains;
 public:
-    explicit Level(int dim=0,int rails=0,int row=0,int column=0):n(dim),available_rails(rails),finish_row(row),finish_column(column){}
+    explicit Level(int dim_row=0,int dim_col=0,int rails=0,int number=0,int row=0,int column=0):
+            n(dim_row),m(dim_col),available_rails(rails),train_no(number),finish_row(row),finish_column(column) {}
     /// void set_rail_matrix(int,int,bool); ///going to use them in a future version
     /// void set_train_matrix(int,int,bool); ///going to use them in a future version
-/// bool path_to_finish(int,int);
-/// bool if_collision(); /// also creates road_matrix;
-/// void generate_distances()
-/// bool correct_order();
+    void lee(queue<pair<int,int>>&);
+    void reset_road_matrix();
+    void generate_distances();
+    bool correct_order();
     friend istream& operator >>(istream&,Level&);
     friend ostream& operator <<(ostream&,const Level&);
 };
@@ -104,61 +100,83 @@ public:
 //    train_matrix[row][column]=used;
 //}
 
-//bool Level::path_to_finish(int row, int column)
-//{
-//
-//}
-//int Level::if_collision()
-//{
-//
-//}
-//void Level::generate_distances()
-//{
-//
-//}
-//bool Level::correct_order()
-//{
-//
-//}
+void Level::lee(queue<pair<int,int>>& q)
+{
+    int dx[]= {0,-1,0,1},dy[]= {-1,0,1,0};
+    road_matrix[q.front().first][q.front().second]=1;
+    while(!q.empty())
+    {
+        int x=q.front().first,y=q.front().second;
+        q.pop();
+        for(int k=0; k<4; k++)
+        {
+            int nx=x+dx[k],ny=y+dy[k];
+            if(0<=nx && nx<n && 0<=ny && ny<=m && rail_matrix[nx][ny]==1 && road_matrix[nx][ny]==0)
+            {
+                road_matrix[nx][ny]=road_matrix[x][y]+1;
+                q.emplace(nx,ny);
+            }
+        }
+    }
+}
+
+void Level::reset_road_matrix()
+{
+    for(int i=0; i<n; i++)
+        for(int j=0; j<n; j++)
+            road_matrix[i][j]=0;
+}
+
+void Level::generate_distances()
+{
+    queue<pair<int,int>>q;
+    for(const pair<Train,pair<int,int>>& train:trains)
+        {
+            reset_road_matrix();
+            q.emplace(train.second.first,train.second.second);
+            lee(q);
+            distances.push_back(road_matrix[finish_row][finish_column]);
+        }
+}
+
+bool Level::correct_order()
+{
+    generate_distances();
+    for(int i=1; i<(int)distances.size(); i++)
+        if(distances[i]<=distances[i-1])///the trains arrive at the station in incorrect order
+            return false;
+    return true;
+}
 
 istream& operator >>(istream& in,Level& l)
 {
-    in>>l.n>>l.available_rails>>l.finish_row>>l.finish_column;
-    for(int i=0;i<l.n;i++)
-        for(int j=0;j<l.n;j++)
+    in>>l.n>>l.m;
+    for(int i=0; i<l.n; i++)
+        for(int j=0; j<l.m; j++)
             in>>l.rail_matrix[i][j];
-    for(int i=0;i<l.n;i++)
-        for(int j=0;j<l.n;j++)
-            in>>l.train_matrix[i][j];
-    Train t;
-    int m;
-    in>>m;
-    for(int i=0; i<m; i++)
+    in>>l.available_rails>>l.train_no>>l.finish_row>>l.finish_column;
+    int x,y;
+    for(int i=0; i<l.train_no; i++)
     {
-        in>>t;
-        l.trains.push_back(t);
+        Train t(i);
+        in>>t>>x>>y;
+        l.trains.push_back({t,{x,y}});
     }
     return in;
 }
 
 ostream& operator <<(ostream& out,const Level& l)
 {
-    for(int i=0;i<l.n;i++)
+    for(int i=0; i<l.n; i++)
     {
-        for(int j=0;j<l.n;j++)
+        for(int j=0; j<l.m; j++)
             out<<l.rail_matrix[i][j]<<' ';
         out<<'\n';
     }
     out<<'\n';
-    for(int i=0;i<l.n;i++)
-    {
-        for(int j=0;j<l.n;j++)
-            out<<l.train_matrix[i][j]<<' ';
-        out<<'\n';
-    }
+    for(const pair<Train,pair<int,int>>& train:l.trains)
+        out<<train.second.first<<' '<<train.second.second<<' '<<train.first;
     out<<'\n';
-    for(const Train& train : l.trains)
-        out<<train;
     return out;
 }
 
@@ -168,17 +186,27 @@ private:
     vector<Level> levels;
 public:
     World() = default;
+    void correct_order_per_level();
     friend istream& operator >>(istream&,World&);
     friend ostream& operator <<(ostream&,const World&);
 };
 
+void World::correct_order_per_level()
+{
+    for(Level& level:levels)
+        if(level.correct_order())
+            cout<<"Level is valid, there is possible for all trains to reach the end in order."<<'\n';
+        else
+            cout<<"Oops, this level is not doable with the given constrains."<<'\n';
+}
+
 istream& operator >>(istream& in,World& w)
 {
     int m;
-    Level l;
     in>>m;
-    for(int i=0;i<m;i++)
+    for(int i=0; i<m; i++)
     {
+        Level l;
         in>>l;
         w.levels.push_back(l);
     }
@@ -194,10 +222,9 @@ ostream& operator <<(ostream& out,const World& w)
 
 int main()
 {
-    Train t1(1,"green"), t2(2,"red"),t3(t2);
-    t3.increase_number();
     World w1{};
     cin>>w1;
+    w1.correct_order_per_level();
     cout<<w1;
     return 0;
 }
