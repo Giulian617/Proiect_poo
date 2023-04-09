@@ -1,67 +1,41 @@
 #include <iostream>
-#include <cstring>
 #include <vector>
+#include <array>
+#include <string>
 #include <queue>
-
 using namespace std;
 
 class Train
 {
 private:
     int number;
-    char* color;
+    string color;
 public:
-    explicit Train(int _number=1,const char* _color=nullptr): number(_number) ///initialization constructor
-    {
-        if(_color==nullptr)
-            color=nullptr;
-        else
-        {
-            color=new char[strlen(_color)+1];
-            strcpy(color,_color);
-        }
-    }
+    explicit Train(int _number=1,string _color=""): number(_number),color(std::move(_color)) {}///initialization constructor
     Train(const Train &other) ///copy constructor
     {
         number=other.number;
-        if(other.color==nullptr)
-            color=nullptr;
-        else
-        {
-            color=new char[strlen(other.color)+1];
-            strcpy(color,other.color);
-        }
+        color=other.color;
     }
     Train& operator =(const Train& other)
     {
         if(this==&other)
             return *this;
         number=other.number;
-        delete[] color;
-        if(other.color==nullptr)
-            color=nullptr;
-        else
-        {
-            color=new char[strlen(other.color)+1];
-            strcpy(color,other.color);
-        }
+        color=other.color;
         return *this;
     }
     friend istream& operator >>(istream&,Train&);
     friend ostream& operator <<(ostream&,const Train&);
     ~Train()
     {
-        delete[] color; ///not necessary to check if it is a nullptr
+        cout<<"~Train"<<'\n';
     }
 };
 
 istream& operator >>(istream& in,Train& t)
 {
-    char aux[256];
-    in>>aux;
-    delete[] t.color; ///not necessary to check if it is a nullptr
-    t.color=new char[strlen(aux)+1];
-    strcpy(t.color,aux);
+    in>>t.color;
     return in;
 }
 
@@ -73,19 +47,18 @@ ostream& operator <<(ostream& out,const Train& t)
 class Level
 {
 private:
-    bool rail_matrix[15][15]={};
-    int n,m,available_rails,train_no,finish_row,finish_column,road_matrix[15][15]={};
-    vector<int>distances;
+    array<array<bool,15>,15>rail_matrix={};
+    int n,m,available_rails,train_no,finish_row,finish_column;
     vector<pair<Train,pair<int,int>>>trains;
 public:
     explicit Level(int dim_row=0,int dim_col=0,int rails=0,int number=0,int row=0,int column=0):
             n(dim_row),m(dim_col),available_rails(rails),train_no(number),finish_row(row),finish_column(column) {}
     /// void set_rail_matrix(int,int,bool); ///going to use them in a future version
     /// void set_train_matrix(int,int,bool); ///going to use them in a future version
-    void lee(queue<pair<int,int>>&);
-    void reset_road_matrix();
-    void generate_distances();
-    bool correct_order();
+    void lee(queue<pair<int,int>>&,array<array<int,15>,15>&) const;
+    void reset_road_matrix(array<array<int,15>,15>&) const;
+    void generate_distances(vector<int>&) const;
+    [[nodiscard]] bool correct_order() const;
     friend istream& operator >>(istream&,Level&);
     friend ostream& operator <<(ostream&,const Level&);
 };
@@ -100,8 +73,10 @@ public:
 //    train_matrix[row][column]=used;
 //}
 
-void Level::lee(queue<pair<int,int>>& q)
+void Level::lee(queue<pair<int,int>>& q,array<array<int,15>,15>& road_matrix) const
 {
+    ///this functions runs a Lee algorithm on the given road matrix in order to generate the minimum distance
+    ///from the starting point to the every other point in the matrix
     const int dx[]= {0,-1,0,1},dy[]= {-1,0,1,0};
     road_matrix[q.front().first][q.front().second]=1;
     while(!q.empty())
@@ -120,28 +95,33 @@ void Level::lee(queue<pair<int,int>>& q)
     }
 }
 
-void Level::reset_road_matrix()
+void Level::reset_road_matrix(array<array<int,15>,15>&road_matrix) const
 {
+    ///this function resets the road matrix between calculating the distance for each train
     for(int i=0; i<n; i++)
         for(int j=0; j<n; j++)
             road_matrix[i][j]=0;
 }
 
-void Level::generate_distances()
+void Level::generate_distances(vector<int>&distances) const
 {
+    ///this function generates the distance from each train to the end
     queue<pair<int,int>>q;
+    array<array<int,15>,15> road_matrix={};
     for(const pair<Train,pair<int,int>>& train:trains)
         {
-            reset_road_matrix();
+            reset_road_matrix(road_matrix);
             q.emplace(train.second.first,train.second.second);
-            lee(q);
+            lee(q,road_matrix);
             distances.push_back(road_matrix[finish_row][finish_column]);
         }
 }
 
-bool Level::correct_order()
+bool Level::correct_order() const
 {
-    generate_distances();
+    ///this function checks if the trains arrive in the correct order at the end
+    vector<int>distances;
+    generate_distances(distances);
     for(int i=1; i<(int)distances.size(); i++)
         if(distances[i]<=distances[i-1])///the trains arrive at the station in incorrect order
             return false;
@@ -195,9 +175,9 @@ void World::correct_order_per_level()
 {
     for(Level& level:levels)
         if(level.correct_order())
-            cout<<"Level is valid, there is possible for all trains to reach the end in order."<<'\n';
+            cout<<"Level is valid, it is possible for all trains to reach the end in order."<<'\n';
         else
-            cout<<"Oops, this level is not doable with the given constrains."<<'\n';
+            cout<<"Oops, this level is not doable with the given constraints."<<'\n';
 }
 
 istream& operator >>(istream& in,World& w)
