@@ -1,13 +1,3 @@
-input format:
-no. levels
-for each level:
-    dim_row dim_col
-    rail_matrix
-    available_rails train_no finish_row finish_column
-    for each train:
-        train color position_row position_col
-
-
 2
 
 4 4
@@ -26,3 +16,12 @@ red 3 0
 0 2 1 2
 purple 1 1
 blue 2 2
+
+input format:
+no. levels
+for each level:
+    dim_row dim_col
+    rail_matrix
+    available_rails train_no finish_row finish_column
+    for each train:
+        train color position_row position_col
