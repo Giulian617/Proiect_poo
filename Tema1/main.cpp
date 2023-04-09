@@ -12,11 +12,7 @@ private:
     string color;
 public:
     explicit Train(int _number=1,string _color=""): number(_number),color(std::move(_color)) {}///initialization constructor
-    Train(const Train &other) ///copy constructor
-    {
-        number=other.number;
-        color=other.color;
-    }
+    Train(const Train &other): number(other.number), color(other.color) {}///copy constructor
     Train& operator =(const Train& other)
     {
         if(this==&other)
