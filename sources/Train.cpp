@@ -11,7 +11,7 @@ Train& Train::operator=(const Train& other)
     return *this;
 }
 
-[[maybe_unused]] int Train::get_no_of_trains()
+int Train::get_no_of_trains()
 {
     return Train::no_of_trains;
 }

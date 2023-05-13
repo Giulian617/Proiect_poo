@@ -1,19 +1,22 @@
 #include "../includes/Level.h"
 
-// void Level::set_rail_matrix(int row,int column,bool used)
-//{
-//    rail_matrix[row][column]=used;
-//}
-//
-// void Level::set_train_matrix(int row,int column,bool used)
-//{
-//    train_matrix[row][column]=used;
-//}
+void Level::set_rail_matrix(int row,int column)
+{
+    rail_matrix[row][column]=true;
+}
 
-void Level::lee(std::queue<std::pair<int,int>>& q,std::array<std::array<int,15>,15>& road_matrix) const
+bool Level::free(int row,int column) const
+{
+    if(0<=row && row<=this->n && 0<=column && column<=this->m)
+        return !rail_matrix[row][column]; ///checks if this cell is free
+    else
+        return false;
+}
+
+void Level::lee(std::queue<std::pair<int,int>>& q,std::array<std::array<int,MAX_DIM>,MAX_DIM>& road_matrix) const
 {
     ///this functions runs a Lee algorithm on the given road matrix in order to generate the minimum distance
-    ///from the starting point to the every other point in the matrix
+    ///from the starting point to every other point in the matrix
     const int dx[]= {0,-1,0,1},dy[]= {-1,0,1,0};
     road_matrix[q.front().first][q.front().second]=1;
     while(!q.empty())
@@ -32,7 +35,7 @@ void Level::lee(std::queue<std::pair<int,int>>& q,std::array<std::array<int,15>,
     }
 }
 
-void Level::reset_road_matrix(std::array<std::array<int,15>,15>&road_matrix) const
+void Level::reset_road_matrix(std::array<std::array<int,MAX_DIM>,MAX_DIM>&road_matrix) const
 {
     ///this function resets the road matrix between calculating the distance for each train
     for(int i=0; i<n; i++)

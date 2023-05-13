@@ -1,12 +1,8 @@
-#include <iostream>
-#include "includes/World.h"
+#include "includes/Game.h"
 using namespace std;
 int main()
 {
-    World w1;
-    cin>>w1;
-    w1.correct_order_per_level();
-    cout<<w1;
+    Game game;
     cout<<'\n'<<Train::get_no_of_trains();
     return 0;
 }
