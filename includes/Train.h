@@ -17,7 +17,7 @@ public:
     }
     Train(const Train&) = default;
     Train& operator =(const Train& other);
-    [[maybe_unused]] static int get_no_of_trains();
+    static int get_no_of_trains();
     friend std::istream& operator >>(std::istream&,Train&);
     friend std::ostream& operator <<(std::ostream&,const Train&);
     ~Train()
