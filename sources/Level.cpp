@@ -10,7 +10,7 @@
 //    train_matrix[row][column]=used;
 //}
 
-void Level::lee(queue<pair<int,int>>& q,array<array<int,15>,15>& road_matrix) const
+void Level::lee(std::queue<std::pair<int,int>>& q,std::array<std::array<int,15>,15>& road_matrix) const
 {
     ///this functions runs a Lee algorithm on the given road matrix in order to generate the minimum distance
     ///from the starting point to the every other point in the matrix
@@ -32,7 +32,7 @@ void Level::lee(queue<pair<int,int>>& q,array<array<int,15>,15>& road_matrix) co
     }
 }
 
-void Level::reset_road_matrix(array<array<int,15>,15>&road_matrix) const
+void Level::reset_road_matrix(std::array<std::array<int,15>,15>&road_matrix) const
 {
     ///this function resets the road matrix between calculating the distance for each train
     for(int i=0; i<n; i++)
@@ -40,12 +40,12 @@ void Level::reset_road_matrix(array<array<int,15>,15>&road_matrix) const
             road_matrix[i][j]=0;
 }
 
-void Level::generate_distances(vector<int>&distances) const
+void Level::generate_distances(std::vector<int>&distances) const
 {
     ///this function generates the distance from each train to the end
-    queue<pair<int,int>>q;
-    array<array<int,15>,15> road_matrix={};
-    for(const pair<Train,pair<int,int>>& train:trains)
+    std::queue<std::pair<int,int>>q;
+    std::array<std::array<int,15>,15> road_matrix={};
+    for(const std::pair<Train,std::pair<int,int>>& train:trains)
     {
         reset_road_matrix(road_matrix);
         q.emplace(train.second.first,train.second.second);
@@ -57,7 +57,7 @@ void Level::generate_distances(vector<int>&distances) const
 bool Level::correct_order() const
 {
     ///this function checks if the trains arrive in the correct order at the end
-    vector<int>distances;
+    std::vector<int>distances;
     generate_distances(distances);
     for(int i=1; i<(int)distances.size(); i++)
         if(distances[i]<=distances[i-1])///the trains arrive at the station in incorrect order
@@ -65,7 +65,7 @@ bool Level::correct_order() const
     return true;
 }
 
-istream& operator >>(istream& in,Level& l)
+std::istream& operator >>(std::istream& in,Level& l)
 {
     in>>l.n>>l.m;
     for(int i=0; i<l.n; i++)
@@ -82,7 +82,7 @@ istream& operator >>(istream& in,Level& l)
     return in;
 }
 
-ostream& operator <<(ostream& out,const Level& l)
+std::ostream& operator <<(std::ostream& out,const Level& l)
 {
     for(int i=0; i<l.n; i++)
     {
@@ -91,7 +91,7 @@ ostream& operator <<(ostream& out,const Level& l)
         out<<'\n';
     }
     out<<'\n';
-    for(const pair<Train,pair<int,int>>& train:l.trains)
+    for(const std::pair<Train,std::pair<int,int>>& train:l.trains)
         out<<train.second.first<<' '<<train.second.second<<' '<<train.first;
     out<<'\n';
     return out;

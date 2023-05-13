@@ -16,13 +16,13 @@ Train& Train::operator=(const Train& other)
     return Train::no_of_trains;
 }
 
-istream& operator >>(istream& in,Train& t)
+std::istream& operator >>(std::istream& in,Train& t)
 {
     in>>t.color;
     return in;
 }
 
-ostream& operator <<(ostream& out,const Train& t)
+std::ostream& operator <<(std::ostream& out,const Train& t)
 {
     return out<<t.number<<' '<<t.color<<'\n';
 }

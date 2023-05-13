@@ -7,17 +7,16 @@
 #include <string>
 #include <queue>
 #include "Level.h"
-using namespace std;
 
 class World
 {
 private:
-    vector<Level> levels;
+    std::vector<Level> levels;
 public:
     World() = default;
     void correct_order_per_level();
-    friend istream& operator >>(istream&,World&);
-    friend ostream& operator <<(ostream&,const World&);
+    friend std::istream& operator >>(std::istream&,World&);
+    friend std::ostream& operator <<(std::ostream&,const World&);
 };
 
 #endif
