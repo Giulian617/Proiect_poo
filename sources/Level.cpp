@@ -3,6 +3,7 @@
 void Level::set_rail_matrix(int row,int column)
 {
     rail_matrix[row][column]=true;
+    available_rails--;
 }
 
 bool Level::free(int row,int column) const
@@ -53,7 +54,10 @@ void Level::generate_distances(std::vector<int>&distances) const
         reset_road_matrix(road_matrix);
         q.emplace(train.second.first,train.second.second);
         lee(q,road_matrix);
-        distances.push_back(road_matrix[finish_row][finish_column]);
+        if(road_matrix[finish_row][finish_column]==0 && train.second.first!=finish_row && train.second.second!=finish_column)
+            distances.push_back(-1);///the train cannot reach the end with the given level configuration
+        else
+            distances.push_back(road_matrix[finish_row][finish_column]);
     }
 }
 
@@ -65,7 +69,19 @@ bool Level::correct_order() const
     for(int i=1; i<(int)distances.size(); i++)
         if(distances[i]<=distances[i-1])///the trains arrive at the station in incorrect order
             return false;
+        else if(distances[i]==-1)///the train cannot reach the destination
+            return false;
     return true;
+}
+
+int Level::game_over()
+{
+    if(this->correct_order())
+        return 1;
+    else if(available_rails==0)
+        return -1;
+    else
+        return 0;
 }
 
 std::istream& operator >>(std::istream& in,Level& l)

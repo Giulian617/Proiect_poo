@@ -9,6 +9,12 @@ void World::correct_order_per_level()
             std::cout<<"Oops, this level is not doable with the given constraints."<<'\n';
 }
 
+Level World::get_level(int position)
+{
+    ///add exception
+    return this->levels[position];
+}
+
 std::istream& operator >>(std::istream& in,World& w)
 {
     int m;
