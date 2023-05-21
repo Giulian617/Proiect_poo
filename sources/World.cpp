@@ -1,6 +1,6 @@
 #include "../includes/World.h"
 
-void World::correct_order_per_level()
+[[maybe_unused]] void World::correct_order_per_level()
 {
     for(Level& level:levels)
         if(level.correct_order())

@@ -10,10 +10,11 @@ class Game
 {
 private:
     std::vector<World>worlds;
-    std::shared_ptr<Player>player;
+    std::array<std::shared_ptr<Player>,2>players;
     void play(Level&);
 public:
-    Game():player(std::make_shared<Human>()) {};
+    Game():players({std::make_shared<Human>(),std::make_shared<AI>()}) {};
+    void swap_players();
     void set_world();
     void menu();
 };

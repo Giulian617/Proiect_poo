@@ -5,10 +5,10 @@ void Game::play(Level& level)
     Level level_copy(level);
     while(true)
     {
-        std::pair<int,int> p=this->player->get_move(level);
+        std::pair<int,int> p=this->players[0]->get_move(level);
         level.set_rail_matrix(p.first,p.second);
         char decision;
-        AI* ai_ptr=dynamic_cast<AI*>(this->player.get());
+        AI* ai_ptr=dynamic_cast<AI*>(this->players[0].get());
         if(ai_ptr!=nullptr)
         {
             ai_ptr->solution(level);
@@ -17,7 +17,7 @@ void Game::play(Level& level)
             if(decision=='y')
             {
                 level=level_copy;
-                this->player=std::make_shared<Human>();
+                swap_players();
             }
             else
                 break;
@@ -39,14 +39,22 @@ void Game::play(Level& level)
                 if(decision=='n')
                 {
                     std::cout<<"Do you want the AI to help?";///option for yes or no
+                    std::cin>>decision;
                     if(decision=='y')
-                        this->player=std::make_shared<AI>();
+                        swap_players();
                     else
                         break;
                 }
             }
         }
     }
+}
+
+void Game::swap_players()
+{
+    std::shared_ptr<Player> aux{this->players[0]->clone()};
+    players[0]=std::move(players[1]);
+    players[1]=std::move(aux);
 }
 
 void Game::set_world()

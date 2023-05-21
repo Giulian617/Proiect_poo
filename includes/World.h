@@ -8,7 +8,7 @@ class World
 private:
     std::vector<Level> levels;
 public:
-    void correct_order_per_level();
+    [[maybe_unused]] void correct_order_per_level();
     Level get_level(int);
     friend std::istream& operator >>(std::istream&,World&);
     friend std::ostream& operator <<(std::ostream&,const World&);
