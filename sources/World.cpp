@@ -1,13 +1,13 @@
 #include "../includes/World.h"
 
-[[maybe_unused]] void World::correct_order_per_level()
-{
-    for(Level& level:levels)
-        if(level.correct_order())
-            std::cout<<"Level is valid, it is possible for all trains to reach the end in order."<<'\n';
-        else
-            std::cout<<"Oops, this level is not doable with the given constraints."<<'\n';
-}
+//[[maybe_unused]] void World::correct_order_per_level()
+//{
+//    for(Level& level:levels)
+//        if(level.correct_order())
+//            std::cout<<"Level is valid, it is possible for all trains to reach the end in order."<<'\n';
+//        else
+//            std::cout<<"Oops, this level is not doable with the given constraints."<<'\n';
+//}
 
 Level World::get_level(int position)
 {
