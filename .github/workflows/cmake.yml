@@ -272,10 +272,6 @@ jobs:
             ${{ env.BUILD_DIR}}/.ninja_log
           key: ${{ matrix.os }}-${{ matrix.cxx }}-ninja-cache-${{ hashFiles('CMakeLists.txt') }}
           restore-keys: ${{ matrix.os }}-${{ matrix.cxx }}-ninja-cache-
-      - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v1.1
-        with:
-          vs-version: '[17.5,17.6)'
       - name: Configure CMake
         uses: ./.github/actions/configure-cmake
         with:
