@@ -45,7 +45,7 @@
 - [x] funcții și atribute `static`
 - [x] STL
 - [x] cât mai multe `const`
-- [x] la sfârșit: commit separat cu adăugarea unei noi derivate fără a modifica restul codului
+- [x] la sfârșit: commit separat cu adăugarea unei noi derivate fără a modifica restul codului  : [d513741](https://github.com/Giulian617/Proiect_poo/commit/d513741676c2c895b6f30867a4ff294f95e92060)
 - [ ] tag de `git`: de exemplu `v0.2`
 
 ## Tema 3
@@ -59,5 +59,6 @@
 
 ## Resurse
 
+- [Rlutil](https://github.com/tapio/rlutil)
 <!-- - [SFML](https://github.com/SFML/SFML/tree/aa82ea132b9296a31922772027ad5d14c1fa381b) (Zlib) -->
 <!-- - adăugați trimiteri către resursele externe care v-au ajutat sau pe care le-ați folosit -->
