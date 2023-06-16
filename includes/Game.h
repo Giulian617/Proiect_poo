@@ -2,9 +2,11 @@
 #define GAME_H
 
 #include <memory>
+#include <random>
 #include "World.h"
 #include "Human.h"
 #include "AI.h"
+#include "Troller.h"
 
 class Game
 {

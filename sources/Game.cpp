@@ -2,6 +2,7 @@
 
 void Game::play(Level& level)
 {
+    srand(time(nullptr));
     Level level_copy(level);
     while(true)
     {
@@ -11,7 +12,10 @@ void Game::play(Level& level)
         AI* ai_ptr=dynamic_cast<AI*>(this->players[0].get());
         if(ai_ptr!=nullptr)
         {
-            AI::solution(level);
+            int troller_chance=rand()%10;
+            if(troller_chance==9)
+                this->players[0]=std::make_shared<Troller>();
+            ai_ptr->solution(level);
             std::cout<<"Do you want to try this level again?";
             std::cin>>decision;
             if(decision=='y')
