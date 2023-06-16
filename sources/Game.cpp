@@ -11,7 +11,7 @@ void Game::play(Level& level)
         AI* ai_ptr=dynamic_cast<AI*>(this->players[0].get());
         if(ai_ptr!=nullptr)
         {
-            ai_ptr->solution(level);
+            AI::solution(level);
             std::cout<<"Do you want to try this level again?";
             std::cin>>decision;
             if(decision=='y')
