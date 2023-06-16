@@ -1,6 +1,6 @@
 #include "../includes/Train.h"
 
-int Train::no_of_trains=0;
+std::set<std::string> Train::good_colors={"red","green","purple","blue","white","orange","yellow"};
 
 Train& Train::operator=(const Train& other)
 {
@@ -11,14 +11,11 @@ Train& Train::operator=(const Train& other)
     return *this;
 }
 
-int Train::get_no_of_trains()
-{
-    return Train::no_of_trains;
-}
-
 std::istream& operator >>(std::istream& in,Train& t)
 {
     in>>t.color;
+    if(!Train::good_colors.contains(t.color))
+        throw not_a_valid_color_error("This isn't an appropriate color.");
     return in;
 }
 

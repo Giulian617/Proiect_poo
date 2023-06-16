@@ -74,7 +74,7 @@ bool Level::correct_order() const
     return true;
 }
 
-int Level::game_over()
+int Level::game_over() const
 {
     if(this->correct_order())
         return 1;
@@ -84,6 +84,15 @@ int Level::game_over()
         return 0;
 }
 
+void Level::print_solution() const
+{
+    for(int i=0; i<this->n; i++)
+    {
+        for(int j=0; j<this->m; j++)
+            std::cout<<this->solution[i][j]<<' ';
+        std::cout<<'\n';
+    }
+}
 std::istream& operator >>(std::istream& in,Level& l)
 {
     in>>l.n>>l.m;
@@ -94,10 +103,15 @@ std::istream& operator >>(std::istream& in,Level& l)
     int x,y;
     for(int i=0; i<l.train_no; i++)
     {
-        Train t(i);
+        Train t(i+1);
         in>>t>>x>>y;
         l.trains.push_back({t,{x,y}});
     }
+    ///acum citeste solutia, in mod normal, nivelele ar fi hardcodate(pentru ca asa este jocul)
+    ///dar momentan se citesc de la tastatura cu tot cu solutiile lor(pentru ai)
+    for(int i=0; i<l.n; i++)
+        for(int j=0; j<l.m; j++)
+            in>>l.solution[i][j];
     return in;
 }
 

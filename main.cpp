@@ -2,10 +2,24 @@
 using namespace std;
 int main()
 {
-    Game game;
-    game.set_world();
-    game.menu();
-    cout<<'\n';
-    cout<<"Number of train objects: "<<Train::get_no_of_trains();
+    try
+    {
+        Game game;
+        game.set_world();
+        game.menu();
+        cout<<'\n';
+    }
+    catch(value_error &err)
+    {
+        cout<<err.what();
+    }
+    catch(not_a_valid_color_error &err)
+    {
+        cout<<err.what();
+    }
+    catch(...)
+    {
+        cout<<"This is unexpected, oops =(.";
+    }
     return 0;
 }

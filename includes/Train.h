@@ -3,27 +3,29 @@
 
 #include <iostream>
 #include <string>
+#include <set>
+#include "Exceptions.h"
 
 class Train
 {
 private:
-    static int no_of_trains;
+    static std::set<std::string> good_colors;
     int number;
     std::string color;
 public:
-    explicit Train(int _number=1,std::string _color=""): number(_number), color(std::move(_color)) ///initialization constructor
+    explicit Train(int _number=1,std::string _color="red"): number(_number), color(std::move(_color)) ///initialization constructor
     {
-        no_of_trains++;
+        if(number<1)
+            throw value_error("A train must have a positive natural number.");
+        if(!good_colors.contains(color))
+            throw not_a_valid_color_error("This isn't an appropriate color.");
     }
     Train(const Train&) = default;
     Train& operator =(const Train& other);
     static int get_no_of_trains();
     friend std::istream& operator >>(std::istream&,Train&);
     friend std::ostream& operator <<(std::ostream&,const Train&);
-    ~Train()
-    {
-        no_of_trains--;
-    }
+    ~Train()=default;
 };
 
 #endif

@@ -6,7 +6,7 @@ std::pair<int,int> AI::get_move([[maybe_unused]] const Level& level) const
     return {-1,-1};
 }
 
-void AI::solution([[maybe_unused]] const Level& level)
+void AI::solution(const Level& level)
 {
-    ///will implement soon
+    level.print_solution();
 }

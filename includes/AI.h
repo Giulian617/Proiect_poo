@@ -9,7 +9,7 @@ public:
     AI():Player() {}
     [[nodiscard]] Player* clone() const override {return new AI(*this);}
     [[nodiscard]] std::pair<int,int> get_move([[maybe_unused]] const Level&) const override;
-    void solution(const Level&);
+    static void solution(const Level&);
 };
 
 #endif

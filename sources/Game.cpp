@@ -33,12 +33,12 @@ void Game::play(Level& level)
             else if(finished==-1)
             {
                 level=level_copy;
-                std::cout<<"You ran out of rails :(";
-                std::cout<<"Do you want to try this level again?"; ///option for yes or no
+                std::cout<<"You ran out of rails :(\n";
+                std::cout<<"Do you want to try this level again?[y/n]"; ///option for yes or no
                 std::cin>>decision;
                 if(decision=='n')
                 {
-                    std::cout<<"Do you want the AI to help?";///option for yes or no
+                    std::cout<<"Do you want the AI to help?[y/n]";///option for yes or no
                     std::cin>>decision;
                     if(decision=='y')
                         swap_players();
