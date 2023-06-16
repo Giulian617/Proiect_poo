@@ -46,7 +46,7 @@
 - [x] STL
 - [x] cât mai multe `const`
 - [x] la sfârșit: commit separat cu adăugarea unei noi derivate fără a modifica restul codului  : [d513741](https://github.com/Giulian617/Proiect_poo/commit/d513741676c2c895b6f30867a4ff294f95e92060)
-- [ ] tag de `git`: de exemplu `v0.2`
+- [x] tag de `git`: de exemplu `v0.2`
 
 ## Tema 3
 
