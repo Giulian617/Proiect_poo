@@ -15,3 +15,11 @@ std::pair<int,int> Human::get_move(const Level& level) const
     }
     return {row,column};
 }
+
+void Human::update_score(double change,int type)
+{
+    if(type==0)
+        this->score+=change;
+    else if(type==1)///meaning someone used a cheat code
+        this->score=this->score*0.5;
+}

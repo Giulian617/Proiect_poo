@@ -6,6 +6,11 @@ void Level::set_rail_matrix(int row,int column)
     available_rails--;
 }
 
+void Level::add_rails(int add)
+{
+    available_rails+=add;
+}
+
 bool Level::free(int row,int column) const
 {
     if(0<=row && row<=this->n && 0<=column && column<=this->m)
@@ -124,6 +129,8 @@ std::ostream& operator <<(std::ostream& out,const Level& l)
         out<<'\n';
     }
     out<<'\n';
+    out<<"x="<<l.n<<" y="<<l.m<<'\n'<<"Number of available rails: "<<l.available_rails<<"\n\n";
+    out<<"Train positions, number and color: \n";
     for(const std::pair<Train,std::pair<int,int>>& train:l.trains)
         out<<train.second.first<<' '<<train.second.second<<' '<<train.first;
     out<<'\n';

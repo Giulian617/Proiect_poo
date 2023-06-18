@@ -24,6 +24,7 @@ public:
                     throw value_error("This level cannot be created. Please introduce valid information.");
             }
     void set_rail_matrix(int,int);
+    void add_rails(int);
     [[nodiscard]] bool free(int,int) const;
     [[nodiscard]] bool correct_order() const;
     [[nodiscard]] int game_over() const;

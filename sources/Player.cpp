@@ -11,3 +11,8 @@ Player& Player::operator=(const Player& other)
     }
     return *this;
 }
+
+double Player::get_score() const
+{
+    return this->score;
+}

@@ -9,6 +9,7 @@ public:
     Human():Player() {}
     [[nodiscard]] Player* clone() const override {return new Human(*this);}
     [[nodiscard]] std::pair<int,int> get_move(const Level&) const override;
+    void update_score(double,int) override;
 };
 
 #endif

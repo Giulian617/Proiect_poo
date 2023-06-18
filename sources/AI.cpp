@@ -10,3 +10,8 @@ void AI::solution(const Level& level) const
 {
     level.print_solution();
 }
+
+void AI::update_score([[maybe_unused]] double change,[[maybe_unused]] int type)
+{
+    this->score=this->score*0.1;//the change is irrelevant here and so is the type
+}
