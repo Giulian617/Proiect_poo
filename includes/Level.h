@@ -10,7 +10,7 @@ class Level
 {
 private:
     const static int MAX_DIM=15; /// if initialized outside of the class (as it should be) then the declaration of the array doesn't work
-    std::array<std::array<bool,MAX_DIM>,MAX_DIM>rail_matrix={},solution={};
+    std::array<std::array<bool,MAX_DIM>,MAX_DIM>rail_matrix={};
     int n,m,available_rails,train_no,finish_row,finish_column;
     std::vector<std::pair<Train,std::pair<int,int>>>trains;
     void lee(std::queue<std::pair<int,int>>&,std::array<std::array<int,MAX_DIM>,MAX_DIM>&) const;
