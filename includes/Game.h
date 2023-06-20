@@ -7,6 +7,7 @@
 #include "Human.h"
 #include "AI.h"
 #include "Troller.h"
+#include "AIFactory.h"
 
 template<bool Hard> ///game mode:0-casual,1-hardcore(only one life, no AI support)
 class Game
@@ -19,7 +20,7 @@ public:
     Game(const Game& other): worlds(other.worlds), players(other.players) {};
     Game& operator=(const Game&);
     ~Game()=default;
-    void play(Level&);
+    void play(Level&,int,int);
     void swap_players();
     void set_world();
     [[nodiscard]] World get_world(int) const;

@@ -20,6 +20,7 @@ public:
     [[nodiscard]] virtual std::pair<int,int> get_move(const Level&) const = 0;
     [[nodiscard]] double get_score() const;
     virtual void update_score(double,int) = 0;
+    virtual void print_solution() const;
 };
 
 #endif

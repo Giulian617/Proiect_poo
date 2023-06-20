@@ -28,7 +28,6 @@ public:
     [[nodiscard]] bool free(int,int) const;
     [[nodiscard]] bool correct_order() const;
     [[nodiscard]] int game_over() const;
-    void print_solution() const;
     friend std::istream& operator >>(std::istream&,Level&);
     friend std::ostream& operator <<(std::ostream&,const Level&);
 };

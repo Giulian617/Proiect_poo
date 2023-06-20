@@ -16,3 +16,8 @@ double Player::get_score() const
 {
     return this->score;
 }
+
+void Player::print_solution() const
+{
+    std::cout<<"I don't have a solution yet";
+}

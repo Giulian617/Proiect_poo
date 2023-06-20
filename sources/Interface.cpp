@@ -3,7 +3,6 @@
 void Interface::menu()
 {
     int decision;
-    rlutil::cls();
     std::cout<<"[1] Play a preselected level"<<'\n';
     std::cout<<"[0] Exit"<<'\n';
     std::cin>>decision;
@@ -38,5 +37,5 @@ void Interface::play_game(Game<Hard>& game)
     std::cout<<"Sorry, this is still under construction, would you be kind enough to enter the level from the file tastatura.txt please?\n";
     game.set_world();
     Level level=game.get_world(0).get_level(0);
-    game.play(level);
+    game.play(level,0,0);
 }
