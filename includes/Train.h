@@ -20,9 +20,8 @@ public:
         if(!good_colors.contains(color))
             throw not_a_valid_color_error("This isn't an appropriate color.");
     }
-    Train(const Train&) = default;
+    Train(const Train&)=default;
     Train& operator =(const Train& other);
-    static int get_no_of_trains();
     friend std::istream& operator >>(std::istream&,Train&);
     friend std::ostream& operator <<(std::ostream&,const Train&);
     ~Train()=default;

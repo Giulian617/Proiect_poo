@@ -1,12 +1,10 @@
-#include "includes/Game.h"
+#include "includes/Interface.h"
 using namespace std;
 int main()
 {
     try
     {
-        Game game;
-        game.set_world();
-        game.menu();
+        Interface::menu();
         cout<<'\n';
     }
     catch(value_error &err)

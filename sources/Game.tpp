@@ -1,6 +1,18 @@
 #include "../includes/Game.h"
 
-void Game::play(Level& level)
+template<bool Hard>
+Game<Hard>& Game<Hard>::operator=(const Game<Hard>&other)
+{
+    if(this!=&other)
+    {
+        this->worlds=other.worlds;
+        this->players=other.players;
+    }
+    return *this;
+}
+
+template<bool Hard>
+void Game<Hard>::play(Level& level)
 {
     srand(time(nullptr));
     Level level_copy(level);
@@ -34,19 +46,28 @@ void Game::play(Level& level)
             int finished=level.game_over();
             if(finished==1)
             {
-                this->players[0]->update_score(100,0);
+                if(Hard)
+                    this->players[0]->update_score(200,0);
+                else
+                    this->players[0]->update_score(100,0);
                 rlutil::cls();
                 std::cout<<level;
                 std::cout<<"Congrats, you cleared this level!!\n";
-                std::cout<<"Your current score is: "<<this->players[0]->get_score();
+                std::cout<<"Your current score is: "<<this->players[0]->get_score()<<'\n';
+                std::cout<<"Thanks for playing!!"<<'\n';
                 break;
             }
-            else if(finished==-1)
+            else if(finished==-1)///if Hard is true then the player should not have the option to play again
             {
-                level=level_copy;
                 std::cout<<"You ran out of rails :(\n";
+                if(Hard)
+                {
+                    std::cout<<"Because you chose hardcore game mode, this is the end of the game for you, thanks for playing!!"<<'\n';
+                    break;
+                }
                 std::cout<<"Do you want to try this level again?[y/n]"; ///option for yes or no
                 std::cin>>decision;
+                level=level_copy;
                 if(decision=='n')
                 {
                     std::cout<<"Do you want to use a cheat code and then retry the level? Be careful, this will modify your score.[y/n]";
@@ -99,32 +120,24 @@ void Game::play(Level& level)
     }
 }
 
-void Game::swap_players()
+template<bool Hard>
+void Game<Hard>::swap_players()
 {
     std::shared_ptr<Player> aux{this->players[0]->clone()};
     players[0]=std::move(players[1]);
     players[1]=std::move(aux);
 }
 
-void Game::set_world()
+template<bool Hard>
+void Game<Hard>::set_world()
 {
     World w;
     std::cin>>w;
     this->worlds.push_back(w);
 }
 
-void Game::menu()
+template<bool Hard>
+World Game<Hard>::get_world(int n) const
 {
-    int decision;
-    rlutil::cls();
-    std::cout<<"[1] Play a preselected level"<<'\n';
-    std::cout<<"[0] Exit"<<'\n';
-    std::cin>>decision;
-    if(decision==1)
-    {
-        Level level=this->worlds[0].get_level(0);
-        play(level);
-    }
-    else
-        return;
+    return this->worlds[n];
 }

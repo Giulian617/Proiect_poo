@@ -94,7 +94,7 @@ endif()
 ###############################################################################
 
 # NOTE: update executable name in .github/workflows/cmake.yml:25 when changing name here
-add_executable(${PROJECT_NAME} main.cpp sources/Train.cpp sources/Level.cpp sources/World.cpp sources/Game.cpp sources/Human.cpp sources/Player.cpp sources/AI.cpp sources/Troller.cpp)
+add_executable(${PROJECT_NAME} main.cpp sources/Train.cpp sources/Level.cpp sources/World.cpp sources/Game.tpp sources/Human.cpp sources/Player.cpp sources/AI.cpp sources/Troller.cpp includes/Interface.h sources/Interface.cpp)
 
 ###############################################################################
 
