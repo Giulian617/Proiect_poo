@@ -219,7 +219,7 @@ void Game<Hard>::swap_players()
 }
 
 template<bool Hard>
-int Game<Hard>::game_over(Level& level,int world_no,int level_no)
+int Game<Hard>::game_over(const Level& level,int world_no,int level_no)
 {
     std::shared_ptr<Player> new_player=std::make_shared<AI>();
     if(world_no==0)
@@ -239,8 +239,7 @@ int Game<Hard>::game_over(Level& level,int world_no,int level_no)
         return 1;
     else if(level.get_available_rails()==0)
         return -1;
-    else
-        return 0;
+    return 0;
 }
 
 template<bool Hard>

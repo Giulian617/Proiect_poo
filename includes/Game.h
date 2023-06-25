@@ -24,7 +24,7 @@ public:
     ~Game()=default;
     void play(Level&,int,int);
     void swap_players();
-    int game_over(Level&,int,int);
+    int game_over(const Level&,int,int);
     void set_world(World&);
     [[nodiscard]] World get_world(int) const;
 };
