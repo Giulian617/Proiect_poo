@@ -19,8 +19,9 @@ public:
     virtual ~Player() = default;
     [[nodiscard]] virtual std::pair<int,int> get_move(const Level&) const = 0;
     [[nodiscard]] double get_score() const;
-    virtual void update_score(double,int) = 0;
+    [[nodiscard]] virtual std::string get_solution() const;
     virtual void print_solution() const;
+    virtual void update_score(double,int) = 0;
 };
 
 #endif

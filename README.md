@@ -9,7 +9,14 @@
 - [x] Scurtă descriere a temei alese, ce v-ați propus să implementați
 
   A puzzle game with trains and rails, with a very small story and a few characters, based on the game [Railbound](https://store.steampowered.com/app/1967510/Railbound/).
-
+ 
+  Type of cells:
+- '0' - this cell is free and a rail can be placed on it
+- 'R' - this cell is occupied by a rail you decided to place
+- 'U' - this cell is occupied by an unmovable rail, which is fixed from the beginning of the level
+- 'I' - this cell is inaccessible, meaning that you cannot place a rail on it
+- 'F' - this cell is where you need to get in order to finish the level
+- 'T' - this cell is the end of a tunnel(they come in pairs), which acts like a portal, the train can enter from both sides and will get out on the other
 ## Tema 1
 
 #### Cerințe

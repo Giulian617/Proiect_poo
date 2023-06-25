@@ -1,6 +1,7 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include <stack>
 #include <memory>
 #include <random>
 #include "World.h"
@@ -15,6 +16,7 @@ class Game
 private:
     std::vector<World>worlds;
     std::array<std::shared_ptr<Player>,2>players;
+    std::stack<std::pair<int,int>>moves;
 public:
     Game():players({std::make_shared<Human>(),std::make_shared<AI>()}){};
     Game(const Game& other): worlds(other.worlds), players(other.players) {};
@@ -22,7 +24,8 @@ public:
     ~Game()=default;
     void play(Level&,int,int);
     void swap_players();
-    void set_world();
+    int game_over(Level&,int,int);
+    void set_world(World&);
     [[nodiscard]] World get_world(int) const;
 };
 

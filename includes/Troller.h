@@ -9,6 +9,7 @@ public:
     Troller():AI() {}
     [[nodiscard]] Player* clone() const override {return new Troller(*this);}
     [[nodiscard]] std::pair<int,int> get_move([[maybe_unused]] const Level&) const override;
+    [[nodiscard]] std::string get_solution() const override;
     void print_solution() const override;
 };
 

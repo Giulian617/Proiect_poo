@@ -16,15 +16,13 @@ void Game<Hard>::play(Level& level,int world_no,int level_no)
 {
     srand(time(nullptr));
     Level level_copy(level);
+    char decision;
     while(true)
     {
-        std::pair<int,int> p=this->players[0]->get_move(level);
-        level.set_rail_matrix(p.first,p.second);
-        char decision;
         AI* ai_ptr=dynamic_cast<AI*>(this->players[0].get());
         if(ai_ptr!=nullptr)
         {
-
+            [[maybe_unused]] std::pair<int,int> p=this->players[0]->get_move(level);
             int troller_chance=rand()%10;
             if(troller_chance==9)
             {
@@ -34,7 +32,7 @@ void Game<Hard>::play(Level& level,int world_no,int level_no)
             else
             {
                 std::shared_ptr<Player> new_player=std::make_shared<AI>();
-                if(world_no==0)///this part is just to express the reason why the factory is created, right now only world 0 level 0 is available
+                if(world_no==0)
                 {
                     if(level_no==0)
                         new_player=AIFactory::world0_level0();
@@ -64,7 +62,48 @@ void Game<Hard>::play(Level& level,int world_no,int level_no)
         }
         else
         {
-            int finished=level.game_over();
+            if(Hard)
+            {
+                std::pair<int,int> p=this->players[0]->get_move(level);
+                level.set_rail_matrix(p.first, p.second);
+            }
+            else
+            {
+                rlutil::cls();
+                decision='c';
+                if(!moves.empty())
+                {
+                    std::cout<<level;
+                    std::cout<<"If you want to undo, introduce u, else introduce c\n";
+                    std::cin>>decision;
+                }
+                if(decision=='u')
+                {
+                    level.unset_rail_matrix(moves.top().first,moves.top().second);
+                    moves.pop();
+                    continue;
+                }
+                else
+                {
+                    std::pair<int,int> p=this->players[0]->get_move(level);
+                    level.set_rail_matrix(p.first, p.second);
+                    moves.emplace(p.first,p.second);
+                    if(level.get_available_rails()==0)
+                    {
+                        rlutil::cls();
+                        std::cout<<level;
+                        std::cout<<"If you want to undo, introduce u, else introduce c\n";
+                        std::cin>>decision;
+                        if(decision=='u')
+                        {
+                            level.unset_rail_matrix(moves.top().first,moves.top().second);
+                            moves.pop();
+                            continue;
+                        }
+                    }
+                }
+            }
+            int finished=this->game_over(level,world_no,level_no);
             if(finished==1)
             {
                 if(Hard)
@@ -76,30 +115,37 @@ void Game<Hard>::play(Level& level,int world_no,int level_no)
                 std::cout<<"Congrats, you cleared this level!!\n";
                 std::cout<<"Your current score is: "<<this->players[0]->get_score()<<'\n';
                 std::cout<<"Thanks for playing!!"<<'\n';
-                /* when adding new levels this option will become available,
-                 * but for now it's just a comment to show the purpose of the factory
                 std::cout<<"Do you want to play the next level?[y/n]"<<'\n';
                 std::cin>>decision;
                 if(decision=='y')
                 {
+                    while(!moves.empty())
+                        moves.pop();
                     if(world_no==0)
                     {
                         if(level_no<=2)
-                            level_no++;
+                        {
+
+                            Level new_level=this->worlds[0].get_level(level_no+1);
+                            play(new_level,world_no,level_no+1);
+                            break;
+                        }
                         else
                         {
-                            world_no=1;
-                            level_no=0;
+                            Level new_level=this->worlds[1].get_level(0);
+                            play(new_level,1,0);
+                            break;
                         }
                     }
                     else
                     {
                         std::cout<<"This was the last level of the game! Congrats, you've completed it!!!\n";
-                        std::cout<<"Thanks for playing!!\n"
+                        std::cout<<"Thanks again for playing!!\n";
+                        break;
                     }
                 }
-                */
-                break;
+                else
+                    break;
             }
             else if(finished==-1)///if Hard is true then the player should not have the option to play again
             {
@@ -173,10 +219,33 @@ void Game<Hard>::swap_players()
 }
 
 template<bool Hard>
-void Game<Hard>::set_world()
+int Game<Hard>::game_over(Level& level,int world_no,int level_no)
 {
-    World w;
-    std::cin>>w;
+    std::shared_ptr<Player> new_player=std::make_shared<AI>();
+    if(world_no==0)
+    {
+        if(level_no==0)
+            new_player=AIFactory::world0_level0();
+        else if(level_no==1)
+            new_player=AIFactory::world0_level1();
+        else if(level_no==2)
+            new_player=AIFactory::world0_level2();
+        else
+            new_player=AIFactory::world0_level3();
+    }
+    else
+        new_player=AIFactory::world1_level0();
+    if(level.get_solution()==new_player->get_solution())
+        return 1;
+    else if(level.get_available_rails()==0)
+        return -1;
+    else
+        return 0;
+}
+
+template<bool Hard>
+void Game<Hard>::set_world(World& w)
+{
     this->worlds.push_back(w);
 }
 

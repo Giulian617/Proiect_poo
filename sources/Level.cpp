@@ -2,8 +2,14 @@
 
 void Level::set_rail_matrix(int row,int column)
 {
-    rail_matrix[row][column]=true;
+    rail_matrix[row][column]='R';
     available_rails--;
+}
+
+void Level::unset_rail_matrix(int row,int column)
+{
+    rail_matrix[row][column]='0';
+    available_rails++;
 }
 
 void Level::add_rails(int add)
@@ -11,15 +17,20 @@ void Level::add_rails(int add)
     available_rails+=add;
 }
 
+int Level::get_available_rails() const
+{
+    return this->available_rails;
+}
+
 bool Level::free(int row,int column) const
 {
     if(0<=row && row<=this->n && 0<=column && column<=this->m)
-        return !rail_matrix[row][column]; ///checks if this cell is free
+        return rail_matrix[row][column]=='0'; ///checks if this cell is free
     else
         return false;
 }
 
-void Level::lee(std::queue<std::pair<int,int>>& q,std::array<std::array<int,MAX_DIM>,MAX_DIM>& road_matrix) const
+/*void Level::lee(std::queue<std::pair<int,int>>& q,std::array<std::array<int,MAX_DIM>,MAX_DIM>& road_matrix) const
 {
     ///this functions runs a Lee algorithm on the given road matrix in order to generate the minimum distance
     ///from the starting point to every other point in the matrix
@@ -77,16 +88,22 @@ bool Level::correct_order() const
         else if(distances[i]==-1)///the train cannot reach the destination
             return false;
     return true;
-}
+}*/
 
-int Level::game_over() const
+std::string Level::get_solution() const
 {
-    if(this->correct_order())
-        return 1;
-    else if(available_rails==0)
-        return -1;
-    else
-        return 0;
+    std::string solution;
+    for(int i=0; i<this->n; i++)
+    {
+        solution+=rail_matrix[i][0];
+        for(int j=1; j<this->m; j++)
+        {
+            solution+=" ";
+            solution+=rail_matrix[i][j];
+        }
+        solution+="\n";
+    }
+    return solution;
 }
 
 std::istream& operator >>(std::istream& in,Level& l)
@@ -111,11 +128,41 @@ std::ostream& operator <<(std::ostream& out,const Level& l)
     for(int i=0; i<l.n; i++)
     {
         for(int j=0; j<l.m; j++)
-            out<<l.rail_matrix[i][j]<<' ';
+            if(l.rail_matrix[i][j]=='0')
+            {
+                rlutil::setColor(15);
+                out<<l.rail_matrix[i][j]<<' ';
+            }
+            else if(l.rail_matrix[i][j]=='R')
+            {
+                rlutil::setColor(8);
+                out<<l.rail_matrix[i][j]<<' ';
+            }
+            else if(l.rail_matrix[i][j]=='U')
+            {
+                rlutil::setColor(5);
+                out<<l.rail_matrix[i][j]<<' ';
+            }
+            else if(l.rail_matrix[i][j]=='I')
+            {
+                rlutil::setColor(4);
+                out<<l.rail_matrix[i][j]<<' ';
+            }
+            else if(l.rail_matrix[i][j]=='F')
+            {
+                rlutil::setColor(14);
+                out<<l.rail_matrix[i][j]<<' ';
+            }
+            else if(l.rail_matrix[i][j]=='T')
+            {
+                rlutil::setColor(1);
+                out<<l.rail_matrix[i][j]<<' ';
+            }
         out<<'\n';
     }
+    rlutil::setColor(15);
     out<<'\n';
-    out<<"x="<<l.n<<" y="<<l.m<<'\n'<<"Number of available rails: "<<l.available_rails<<"\n\n";
+    out<<"x="<<l.n<<" y="<<l.m<<"\n\n"<<"Number of available rails: "<<l.available_rails<<"\n\n";
     out<<"Train positions, number and color: \n";
     for(const std::pair<Train,std::pair<int,int>>& train:l.trains)
         out<<train.second.first<<' '<<train.second.second<<' '<<train.first;
